@@ -1,10 +1,108 @@
-<div *ngIf="afAuth.user | async as user; else showLogin">
-    <div *ngFor="let usuario of datosusuario | async">
-        <h1>Hola {{ usuario.Nombre }} {{ usuario.Apellido }}</h1>
-        <button (click)="logout()">Salir</button>
+<div *ngIf="userid != '0' && userid != '1'">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#" style="margin-left:10%"><i class="fas fa-2x fa-comments" style="color:#17a2b8"></i>   Portero Inteligente</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <span class="navbar-text" style="margin-left:80%">
+                   <div class="btn-group dropleft">
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         {{datosusuario.Nombre}}
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" data-toggle="modal" data-target=".bd-example-modal-lg" style="cursor: pointer;"><i class="fas fa-cogs "></i>
+                            Configuración</a>
+                          
+                          <div class="dropdown-divider"></div>
+                          <a class="dropdown-item logout" style="cursor: pointer;" (click)="logout()"> <i class="fas fa-sign-out-alt "></i>
+                           Cerrar Sesión</a>
+                        </div>
+                    </div>
+            </span>
+        </div>
+    </nav>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Hola {{datosusuario.Nombre}}</h1>
+            <p class="lead">Bienvenido al centro de control de tu Portero Inteligente.</p>
+        </div>
+    </div>
+    <div>
+        {{ (item | async)?.name }}
+    </div>
+
+</div>
+
+
+
+
+
+
+<div *ngIf="userid == '1'" class="login-form">
+    <form (ngSubmit)="login()" #forma="ngForm">
+        <div class="avatar">
+            <img src="src/assets/img/avatar.png" alt="Avatar">
+        </div>
+        <h2 class="text-center">Iniciar Sesión</h2>
+        <div class="form-group">
+
+
+            <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="formulario.mail" required #nombre="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+            <!-- <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
+                    Este campo es requerido.
+                </div>
+                <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
+                    Mìnimo {{nombre.errors.minlength.requiredLength}} caracteres.
+                </div>-->
+
+
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" placeholder="Contraseña" name="password" minlength=3 [(ngModel)]="formulario.password" required #password="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresar</button>
+        </div>
+        <div *ngIf="error" class="alert alert-danger" role="alert">
+            Inicio de sesión incorrecto, verifique los datos ingresados
+        </div>
+    </form>
+
+</div>
+
+
+<!--TODO ARMAR LOADER-->
+<div *ngIf="userid == '0'" class="spinner">
+
+
+    <i class="fas fa-10x fa-circle-notch fa-spin" style="color:#17a2b8; text-align: center"></i>
+
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
     </div>
 </div>
-<ng-template #showLogin>
-    <p>Ingrese por favor.</p>
-    <button (click)="login()">Ingresar</button>
-</ng-template>
