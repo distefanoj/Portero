@@ -186,8 +186,8 @@ export class AdminComponent implements OnInit {
         this.habitante.Nombre=Nombre,
         this.habitante.Apellido=Apellido,
         this.habitante.Mail=Mail,
-        this.habitante.Presente=Presente,
-        console.log(this.habitante);
+        this.habitante.Presente=Presente
+        
       }
 
 
@@ -200,14 +200,11 @@ export class AdminComponent implements OnInit {
 
 
 changePresente(uid,Nombre,Apellido,Mail,Presente){
-  console.log("Cambiando");
-  console.log("llega: "+Presente);
-  this.habitante.uid=uid;
+    this.habitante.uid=uid;
   this.habitante.Nombre=Nombre;
   this.habitante.Apellido=Apellido;
   this.habitante.Mail=Mail;
   this.habitante.Presente=Presente;
-  console.log("sale: "+this.habitante.Presente);
   this.updateHabitante()
 }
 
