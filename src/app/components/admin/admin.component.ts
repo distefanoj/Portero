@@ -190,27 +190,21 @@ export class AdminComponent implements OnInit {
         
       }
 
+      //Función para cambiar el valor Presente de un habitante
+      changePresente(uid,Nombre,Apellido,Mail,Presente){
+        this.habitante.uid=uid;
+        this.habitante.Nombre=Nombre;
+        this.habitante.Apellido=Apellido;
+        this.habitante.Mail=Mail;
+        this.habitante.Presente=Presente;
+        this.updateHabitante()
+    }
+    
 
 
     //-------------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------------
-
-
-
-
-changePresente(uid,Nombre,Apellido,Mail,Presente){
-    this.habitante.uid=uid;
-  this.habitante.Nombre=Nombre;
-  this.habitante.Apellido=Apellido;
-  this.habitante.Mail=Mail;
-  this.habitante.Presente=Presente;
-  this.updateHabitante()
-}
-
-
-
-
 
   //Luego de la construcción del componente se realiza la carga de habitantes
   ngOnInit() {

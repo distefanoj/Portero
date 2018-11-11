@@ -1,0 +1,159 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    background-color: black;
+    color: white
+}
+
+.message {
+    font-size: 1em;
+    font-style: italic;
+    font-weight: 400;
+    width: 80%;
+}
+
+.timeform {
+    float: left;
+    width: 100%;
+}
+
+.timeform>i {
+    margin-left: 20px;
+}
+
+.timeform>.timestamp {
+    font-size: 0.6em;
+}
+
+.avatar {
+    width: 9%;
+    margin-right: 20px;
+    margin-left: 20px
+}
+
+.user {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: .75rem 1.25rem;
+    color: darkorange;
+    background-color: black;
+    margin-left: -9%;
+}
+
+.user>.message {
+    text-align: right
+}
+
+.user>.timeform {
+    text-align: right!important;
+    margin-right: 20%!important;
+}
+
+.bot {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: .75rem 1.25rem;
+    background-color: black;
+    color: aqua;
+    margin-left: -9%;
+}
+
+.bot>.timeform {
+    margin-left: 15%!important;
+}
+
+.botonon {
+    display: block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 200px;
+    height: 200px;
+    border: 0;
+    border-radius: 50%;
+    padding: .7em 1em;
+    margin: 4em auto 3em;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(180deg, #39C2C9 0%, #3FC8C9 80%, #3FC8C9 100%);
+    box-shadow: 2px 5px 30px rgba(63, 200, 201, .4);
+    will-change: transform, filter;
+    transition: all 0.3s ease-out;
+}
+
+.botonoff {
+    display: block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 200px;
+    height: 200px;
+    border: 0;
+    border-radius: 50%;
+    padding: .7em 1em;
+    margin: 4em auto 3em;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(180deg, #FF4000 0%, #FF4000 80%, #FF4000 100%);
+    box-shadow: 2px 5px 30px rgba(212, 80, 28, 0.4);
+    will-change: transform, filter;
+    transition: all 0.3s ease-out;
+}
+
+.botonoff .fa {
+    font-size: 100px;
+    line-height: 153px;
+    margin: 0;
+    text-shadow: 1px 2px 2px #2a8b90;
+}
+
+.botonoff:hover {
+    transform: scale(.92);
+    cursor: pointer;
+}
+
+.botonoff:active {
+    filter: brightness(.8);
+}
+
+.botonoff:focus {
+    outline: 0;
+}
+
+.botonon .fa {
+    font-size: 130px;
+    line-height: 200px;
+    margin: 0;
+    text-shadow: 1px 2px 2px #2a8b90;
+}
+
+.botonon:hover {
+    transform: scale(.92);
+    cursor: pointer;
+}
+
+.botonon:active {
+    filter: brightness(.8);
+}
+
+.botonon:focus {
+    outline: 0;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 1.3em;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-left: 10px;
+}
+
+.fa-github::before {
+    content: "\f09b";
+}

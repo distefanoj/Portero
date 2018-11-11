@@ -11,7 +11,8 @@ export const environment = {
     projectId: "porterointeligente-3fe94",
     storageBucket: "porterointeligente-3fe94.appspot.com",
     messagingSenderId: "738322315185"
-  }
+  },
+  token: '2c34369670e64ddd8216cbea0ac6932b'
 };
 
 /*

@@ -1,0 +1,49 @@
+<div class="container">
+
+    <div class="col-md-12" style="border:solid black 1px; background-color:#80808038; height:auto; padding-bottom:2vw">
+        <div class="col-md-12" style="text-align: center; margin-top:1%">
+            <h2>Prototipo</h2>
+        </div>
+        <div class="row" style="margin-top:1%;margin-bottom:1%">
+            <div style="align-items: center; justify-content: center; display: flex; width: 100% ">
+                <button *ngIf="showSearchButton" class="botonon" name="escuchar" id="escuchar" (click)="comenzar()" [disabled]="!showSearchButton"><i class="fa fa-microphone"></i></button>
+                <button *ngIf="!showSearchButton" class="botonoff" name="escuchar" id="escuchar" [disabled]="!showSearchButton"><i class="fa fa-circle-notch fa-spin"></i></button>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+
+            <div class="col-md-6" style="margin-top:1vw">
+                <h6>Entrada de texto interpretada</h6>
+                <div style="width:100%; height:300px; background-color:black; color:greenyellow">{{speechData}}</div>
+            </div>
+
+            <div class="col-md-6" style="margin-top:1vw">
+                <h6>Histórico de mensajes interpretados</h6>
+                <div #chatbot style="width:100%; background-color:black; color:red; height:300px; overflow: auto">
+                    <ul style="list-style-type: none;">
+                        <li *ngFor="let data of speechHistory" class="list-group-item" [ngClass]="{'user': data.user== 'user', 'bot': data.user== 'bot' }">
+                            <img *ngIf="data.user=='bot'" [src]="data.avatar" class="avatar" />
+                            <div class="message">
+                                {{data.content}}
+                            </div>
+                            <img *ngIf="data.user=='user'" [src]="data.avatar" class="avatar" />
+                            <div class="timeform" *ngIf="data.user=='user'">
+                                <span class="timestamp"> {{data.timestamp | date : 'dd/MM/yyyy HH:mm:ss' }}</span><i class="fa fa-clock-o" aria-hidden="true"></i>
+                            </div>
+                            <div class="timeform" *ngIf="data.user=='bot'">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i><span class="timestamp"> {{data.timestamp | date : 'dd/MM/yyyy HH:mm:ss' }}</span>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
