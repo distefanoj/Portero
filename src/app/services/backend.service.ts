@@ -28,22 +28,80 @@ userId:string="0";
 
 
 
+//----------------------------------- Funciones de Sesión -----------------------------------
+
+
+  //Función para iniciar sesión. Retorna comao promesa información de usuario logueado en caso de éxito.
+  login = (username,password)=> {
+    return new Promise <string>((resolve, reject)=>{
+      this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(username, password).then(a=>{
+        resolve("logueado")
+      })
+      .catch(e=>{
+        console.log(e);
+        reject ("error de logue")
+      });
+    })
+  }
+
+
+  //Fución que permite determinar si existe una sesión iniciada. Retorna una promsea con el uid del usuario logueado en caso de existir.
+  logued = ()=>{
+    return new Promise <string>((resolve, reject)=>{
+      this.afAuth.authState.subscribe(user=>{
+        if(user){
+          this.userId= user.uid;
+          resolve (this.userId)     
+        }   
+        else{
+          this.userId= "1";
+          console.log("Usuario NO Logueado");
+          resolve(this.userId)
+        }       
+      });  
+    })
+  }
+
+
+  //Función para cerrar sesión.
+  logout() {
+    this.afAuth.auth.signOut();
+  }
+
+
+//-------------------------------------------------------------------------------------------
 
 
 
 
- 
-//Función que permite obtener los datos de un usuario según su id
-getDatosUsuario(usuario):any{
-return this.afs.collection('usuarios').doc(usuario).snapshotChanges();
-}
+//----------------------------------- Funciones de Usuario ----------------------------------
 
 
-//Actualiza el Usuario
-public updateUsuario(data: Usuario) {
-  return this.afs.collection('usuarios').doc(data.uid).set(data);
-}
 
+  //Función que permite obtener los datos de un usuario según su id
+  getDatosUsuario(usuario):any{
+  return this.afs.collection('usuarios').doc(usuario).snapshotChanges();
+  }
+  
+  
+  //Actualiza el Usuario
+  public updateUsuario(data: Usuario) {
+    return this.afs.collection('usuarios').doc(data.uid).set(data);
+  }
+
+
+
+
+//-------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+//----------------------------------- Funciones de Habitantes--------------------------------
 
 //Obtiene lista de habitantes
 public getHabitantes() {
@@ -65,42 +123,18 @@ public deleteHabitantes(documentId: string) {
   return this.afs.collection('habitantes').doc(documentId).delete();
 }
 
-
-//Función para cerrar sesión.
-logout() {
-  this.afAuth.auth.signOut();
-}
-
-//Función para iniciar sesión. Retorna comao promesa información de usuario logueado en caso de éxito.
-login = (username,password)=> {
-  return new Promise <string>((resolve, reject)=>{
-    this.afAuth.auth.signInAndRetrieveDataWithEmailAndPassword(username, password).then(a=>{
-      resolve("logueado")
-    })
-    .catch(e=>{
-       console.log(e);
-       reject ("error de logue")
-    });
-  })
- }
+//-------------------------------------------------------------------------------------------
 
 
- //Fución que permite determinar si existe una sesión iniciada. Retorna una promsea con el uid del usuario logueado en caso de existir.
- logued = ()=>{
-  return new Promise <string>((resolve, reject)=>{
-    this.afAuth.authState.subscribe(user=>{
-      if(user){
-        this.userId= user.uid;
-        resolve (this.userId)     
-      }   
-      else{
-        this.userId= "1";
-        console.log("Usuario NO Logueado");
-        resolve(this.userId)
-      }       
-    });  
-  })
- }
+l
+
+
+
+//----------------------------------- Funciones de Registro----------------------------------
+
+
+
+//-------------------------------------------------------------------------------------------
 
 
 }

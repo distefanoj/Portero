@@ -44,9 +44,9 @@
     <!-- ............................... -->
 
 
+
     <!--Página de Habitantes-->
     <div style="margin-bottom:1vw" *ngIf="pagina=='1'">
-
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-4">Habitantes</h1>
@@ -57,7 +57,6 @@
             <table class="table ">
                 <thead>
                     <tr>
-
                         <th scope="col ">Nombre</th>
                         <th scope="col ">Apellido</th>
                         <th scope="col ">Mail</th>
@@ -70,22 +69,21 @@
                         <th scope="row ">{{habitante.data.Nombre}}</th>
                         <td>{{habitante.data.Apellido}}</td>
                         <td>{{habitante.data.Mail}}</td>
-                        <td>{{habitante.data.Presente}}</td>
-
+                        <td>
+                            <span class="switch">
+                                <input type="checkbox" (change)="changePresente(habitante.uid,habitante.data.Nombre, habitante.data.Apellido, habitante.data.Mail, habitante.data.Presente)" class="switch" id="{{habitante.data.Nombre}}" [(ngModel)]="habitante.data.Presente">
+                                <label for="{{habitante.data.Nombre}}"></label>
+                            </span>
+                        </td>
                         <td><button style="" class="btn btn-info " data-toggle="modal" data-target=".HabitantesEdit" (click)="editUsuario=true ; editaHabitante(habitante.uid,habitante.data.Nombre, habitante.data.Apellido, habitante.data.Mail, habitante.data.Presente)"><i class="fas fa-edit"></i></button>                            <span></span>
                             <button class="btn btn-danger " (click)="deleteHabitante(habitante.uid)"><i class="fas fa-trash-alt "></i></button>
                         </td>
                     </tr>
-
                 </tbody>
             </table>
             <br>
             <button class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target=".HabitantesAdd" (click)="clearHabitante()"><i class="fas fa-plus "></i> Agregar</button>
-
-
         </div>
-
-
     </div>
     <!-- ............................... -->
 
@@ -126,22 +124,16 @@
         </div>
         <h2 class="text-center">Iniciar Sesión</h2>
         <div class="form-group">
-
-
             <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="formulario.mail" required #nombre="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
             <!-- <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
                     Este campo es requerido.
                 </div>
                 <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
                     Mìnimo {{nombre.errors.minlength.requiredLength}} caracteres.
                 </div>-->
-
-
         </div>
         <div class="form-group">
             <input class="form-control" type="password" placeholder="Contraseña" name="password" minlength=3 [(ngModel)]="formulario.password" required #password="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary btn-lg btn-block">Ingresar</button>
@@ -150,7 +142,6 @@
             Inicio de sesión incorrecto, verifique los datos ingresados
         </div>
     </form>
-
 </div>
 <!-- ............................... -->
 
@@ -158,11 +149,7 @@
 
 <!--Pantalla Loader-->
 <div *ngIf="userid == '0'" class="spinner">
-
-
     <i class="fas fa-10x fa-circle-notch fa-spin" style="color:#17a2b8; text-align: center"></i>
-
-
 </div>
 <!-- ............................... -->
 
@@ -180,41 +167,26 @@
             </div>
             <div class="modal-body">
                 <form #userdata="ngForm">
-
                     <div class="form-group">
-
-
                         <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="datosusuario.Nombre" required #nombre="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
                         <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
                             Este campo es requerido.
                         </div>
                         <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
                             Mínimo {{nombre.errors.minlength.requiredLength}} caracteres.
                         </div>
-
-
                     </div>
-
                     <div class="form-group">
-
-
                         <input class="form-control" type="text" placeholder="Apellido" name="apellido" minlength=3 [(ngModel)]="datosusuario.Apellido" required #apellido="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
                         <div class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.required}" *ngIf="apellido.errors?.required">
                             Este campo es requerido.
                         </div>
                         <div *ngIf="apellido.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.minlength}">
                             Mínimo {{apellido.errors.minlength.requiredLength}} caracteres.
                         </div>
-
                     </div>
-
-
-
                     <div class="form-group">
                         <input class="form-control" type="email" placeholder="Contraseña" name="mail" minlength=3 [(ngModel)]="datosusuario.Mail" required #password="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
                     </div>
                     <div class="form-group" *ngIf="!editUsuario">
                         <button type="" class="btn btn-info btn-lg btn-block" (click)="editUsuario=!editUsuario"><i class="fas fa-user-edit "></i> Editar</button>
@@ -226,8 +198,6 @@
                         <div class="col ">
                             <button type=" " class="btn btn-danger btn-lg btn-block " (click)="editUsuario=!editUsuario "><i class="fas fa-times "></i> Cancelar</button>
                         </div>
-
-
                     </div>
                     <div *ngIf="error " class="alert alert-danger " role="alert ">
                         Hubo un problema, inténtelo nuevamente
@@ -236,9 +206,7 @@
                         Datos actualizados correctamente
                     </div>
                 </form>
-
             </div>
-
         </div>
     </div>
 </div>
@@ -263,43 +231,27 @@
             </div>
             <div class="modal-body">
                 <form #habitantedata="ngForm">
-
                     <div class="form-group">
-
-
                         <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="habitante.Nombre" required #nombre="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
                         <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
                             Este campo es requerido.
                         </div>
                         <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
                             Mínimo {{nombre.errors.minlength.requiredLength}} caracteres.
                         </div>
-
-
                     </div>
-
                     <div class="form-group">
-
-
                         <input class="form-control" type="text" placeholder="Apellido" name="apellido" minlength=3 [(ngModel)]="habitante.Apellido" required #apellido="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
                         <div class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.required}" *ngIf="apellido.errors?.required">
                             Este campo es requerido.
                         </div>
                         <div *ngIf="apellido.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.minlength}">
                             Mínimo {{apellido.errors.minlength.requiredLength}} caracteres.
                         </div>
-
                     </div>
-
-
-
                     <div class="form-group">
                         <input class="form-control" type="email" placeholder="Contraseña" name="mail" minlength=3 [(ngModel)]="habitante.Mail" required #password="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
-
                     </div>
-
                     <div class="form-row" *ngIf="editUsuario">
                         <div class="col">
                             <button type="" [disabled]="!habitantedata.valid" class=" btn btn-info btn-lg btn-block " (click)="updateHabitante() "><i class="fas fa-save "></i> Guardar</button>
@@ -307,8 +259,6 @@
                         <div class="col ">
                             <button type="button" class="btn btn-danger btn-lg btn-block " data-dismiss="modal"><i class="fas fa-times "></i> Cancelar</button>
                         </div>
-
-
                     </div>
                     <div *ngIf="error " class="alert alert-danger " role="alert ">
                         Hubo un problema, inténtelo nuevamente
@@ -317,9 +267,7 @@
                         Datos actualizados correctamente
                     </div>
                 </form>
-
             </div>
-
         </div>
     </div>
 </div>

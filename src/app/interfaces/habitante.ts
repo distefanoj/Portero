@@ -2,6 +2,6 @@ export interface Habitante {
     Nombre:string;
     Apellido:string;
     Mail:string;
-    Presente:string;
+    Presente:Boolean;
     uid:string;
 }
