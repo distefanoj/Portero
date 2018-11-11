@@ -1,7 +1,8 @@
+<!--Pantalla Principal-->
 <div *ngIf="userid != '0' && userid != '1'">
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#" style="margin-left:10%"><i class="fas fa-2x fa-comments" style="color:#17a2b8"></i>   Portero Inteligente</a>
+        <a (click)="pagina='0'" class="navbar-brand" href="#" style="margin-left:10%"><i class="fas fa-2x fa-comments" style="color:#17a2b8"></i>   Portero Inteligente</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -12,9 +13,15 @@
                          {{datosusuario.Nombre}}
                         </button>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" data-toggle="modal" data-target=".bd-example-modal-lg" style="cursor: pointer;"><i class="fas fa-cogs "></i>
-                            Configuración</a>
+                          <a class="dropdown-item" ><i class="fas fa-cogs "></i>
+                                Configuración</a>
                           
+                          <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" data-toggle="modal" data-target=".Perfil" style="cursor: pointer;"><i class="fas fa-user-cog"></i> Mi Perfil</a>
+                            <a class="dropdown-item" (click)="pagina='1'" style="cursor: pointer;"><i class="fas fa-users"></i> Habitantes</a>
+
+
+
                           <div class="dropdown-divider"></div>
                           <a class="dropdown-item logout" style="cursor: pointer;" (click)="logout()"> <i class="fas fa-sign-out-alt "></i>
                            Cerrar Sesión</a>
@@ -24,12 +31,74 @@
         </div>
     </nav>
 
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Hola {{datosusuario.Nombre}} {{datosusuario.Apellido}}</h1>
-            <p class="lead">Bienvenido al centro de control de tu Portero Inteligente. {{datosusuario.uid}}</p>
+
+    <!--Página de Inicio-->
+    <div *ngIf="pagina=='0'">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Hola {{datosusuario.Nombre}} {{datosusuario.Apellido}}</h1>
+                <p class="lead">Bienvenido al centro de control de tu Portero Inteligente. {{datosusuario.uid}}</p>
+            </div>
         </div>
     </div>
+    <!-- ............................... -->
+
+
+    <!--Página de Habitantes-->
+    <div style="margin-bottom:1vw" *ngIf="pagina=='1'">
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Habitantes</h1>
+                <p class="lead">Configure los nombres de los habitantes del hogar</p>
+            </div>
+        </div>
+        <div class="container">
+            <table class="table ">
+                <thead>
+                    <tr>
+
+                        <th scope="col ">Nombre</th>
+                        <th scope="col ">Apellido</th>
+                        <th scope="col ">Mail</th>
+                        <th scope="col ">Presente</th>
+                        <th scope="col ">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let habitante of habitantes ">
+                        <th scope="row ">{{habitante.data.Nombre}}</th>
+                        <td>{{habitante.data.Apellido}}</td>
+                        <td>{{habitante.data.Mail}}</td>
+                        <td>{{habitante.data.Presente}}</td>
+
+                        <td><button style="" class="btn btn-info " data-toggle="modal" data-target=".HabitantesEdit" (click)="editUsuario=true ; editaHabitante(habitante.uid,habitante.data.Nombre, habitante.data.Apellido, habitante.data.Mail, habitante.data.Presente)"><i class="fas fa-edit"></i></button>                            <span></span>
+                            <button class="btn btn-danger " (click)="deleteHabitante(habitante.uid)"><i class="fas fa-trash-alt "></i></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <br>
+            <button class="btn btn-info btn-lg btn-block" data-toggle="modal" data-target=".HabitantesAdd" (click)="clearHabitante()"><i class="fas fa-plus "></i> Agregar</button>
+
+
+        </div>
+
+
+    </div>
+    <!-- ............................... -->
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -44,12 +113,12 @@
 
 
 </div>
+<!-- ............................... -->
 
 
 
 
-
-
+<!--Pantalla Inicio de Sesión-->
 <div *ngIf="userid == '1'" class="login-form">
     <form (ngSubmit)="login()" #forma="ngForm">
         <div class="avatar">
@@ -83,9 +152,11 @@
     </form>
 
 </div>
+<!-- ............................... -->
 
 
-<!--TODO ARMAR LOADER-->
+
+<!--Pantalla Loader-->
 <div *ngIf="userid == '0'" class="spinner">
 
 
@@ -93,10 +164,12 @@
 
 
 </div>
+<!-- ............................... -->
 
 
-<!-- Modal -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+
+<!-- Modal - Configuración de Usuario -->
+<div class="modal fade Perfil" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -169,3 +242,168 @@
         </div>
     </div>
 </div>
+<!-- ............................... -->
+
+
+
+
+
+
+
+
+<!-- Modal - Modificar Habitante-->
+<div class="modal fade HabitantesEdit" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar Habitante</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #habitantedata="ngForm">
+
+                    <div class="form-group">
+
+
+                        <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="habitante.Nombre" required #nombre="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                        <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
+                            Este campo es requerido.
+                        </div>
+                        <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
+                            Mínimo {{nombre.errors.minlength.requiredLength}} caracteres.
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <input class="form-control" type="text" placeholder="Apellido" name="apellido" minlength=3 [(ngModel)]="habitante.Apellido" required #apellido="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                        <div class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.required}" *ngIf="apellido.errors?.required">
+                            Este campo es requerido.
+                        </div>
+                        <div *ngIf="apellido.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.minlength}">
+                            Mínimo {{apellido.errors.minlength.requiredLength}} caracteres.
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <input class="form-control" type="email" placeholder="Contraseña" name="mail" minlength=3 [(ngModel)]="habitante.Mail" required #password="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                    </div>
+
+                    <div class="form-row" *ngIf="editUsuario">
+                        <div class="col">
+                            <button type="" [disabled]="!habitantedata.valid" class=" btn btn-info btn-lg btn-block " (click)="updateHabitante() "><i class="fas fa-save "></i> Guardar</button>
+                        </div>
+                        <div class="col ">
+                            <button type="button" class="btn btn-danger btn-lg btn-block " data-dismiss="modal"><i class="fas fa-times "></i> Cancelar</button>
+                        </div>
+
+
+                    </div>
+                    <div *ngIf="error " class="alert alert-danger " role="alert ">
+                        Hubo un problema, inténtelo nuevamente
+                    </div>
+                    <div *ngIf="success " class="alert alert-success " role="alert ">
+                        Datos actualizados correctamente
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ............................... -->
+
+
+
+
+
+
+
+
+
+
+<!-- Modal - Agregar Habitante-->
+<div *ngIf="editUsuario" id="addhabitante" class="modal fade HabitantesAdd" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Agregar Nuevo Habitante</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+
+                <form #habitanteadd="ngForm">
+
+                    <div class="form-group">
+
+
+                        <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="habitante.Nombre" required #nombre="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                        <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
+                            Este campo es requerido.
+                        </div>
+                        <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
+                            Mínimo {{nombre.errors.minlength.requiredLength}} caracteres.
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <input class="form-control" type="text" placeholder="Apellido" name="apellido" minlength=3 [(ngModel)]="habitante.Apellido" required #apellido="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                        <div class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.required}" *ngIf="apellido.errors?.required">
+                            Este campo es requerido.
+                        </div>
+                        <div *ngIf="apellido.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.minlength}">
+                            Mínimo {{apellido.errors.minlength.requiredLength}} caracteres.
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <input class="form-control" type="email" placeholder="Correo Electrónico" name="mail" minlength=3 [(ngModel)]="habitante.Mail" required #password="ngModel" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                    </div>
+                    <div class="form-row">
+                        <div class="col">
+                            <button type="" [disabled]="!habitanteadd.valid" class="btn btn-info btn-lg btn-block" (click)="addHabitante()"><i class="fas fa-plus "></i> Agregar</button>
+
+                        </div>
+                        <div class="col">
+                            <button type="" class="btn btn-danger btn-lg btn-block" data-dismiss="modal"><i class="fas fa-sing-out-alt "></i> Salir</button>
+
+                        </div>
+                    </div>
+
+                    <div *ngIf="error " class="alert alert-danger " role="alert ">
+                        Hubo un problema, inténtelo nuevamente
+                    </div>
+                    <div *ngIf="success " class="alert alert-success " role="alert ">
+                        Datos actualizados correctamente
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ............................... -->
