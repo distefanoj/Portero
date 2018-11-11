@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Usuario } from "../interfaces/usuario.interface";
 
 
 @Injectable({
@@ -35,6 +36,17 @@ userId:string="0";
 getDatosUsuario(usuario):any{
 return this.afs.collection('usuarios').doc(usuario).snapshotChanges();
 }
+
+
+  //Actualiza un Usuario
+  public updateUsuario(data: Usuario) {
+    return this.afs.collection('usuarios').doc(data.uid).set(data);
+  }
+
+
+
+
+
 
 //Función para cerrar sesión.
 logout() {

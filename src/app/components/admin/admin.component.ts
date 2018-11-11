@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { BackendService } from '../../services/backend.service';
+
 import { Observable } from 'rxjs';
 import {NgForm} from '@angular/forms';
 import { Usuario } from "../../interfaces/usuario.interface";
@@ -15,9 +16,9 @@ import { Usuario } from "../../interfaces/usuario.interface";
 export class AdminComponent implements OnInit {
 
 
-  error:Boolean
-
-
+  error:Boolean;
+  success:Boolean;
+  editUsuario:Boolean=false;
 
 
 
@@ -33,7 +34,7 @@ export class AdminComponent implements OnInit {
     password:"tomcat14"    
   }
  
-  constructor(public afAuth: AngularFireAuth, afs:AngularFirestore, public bs:BackendService) {
+  constructor(public afAuth: AngularFireAuth, afs:AngularFirestore, public bs:BackendService, public zone:NgZone) {
    
     //Se verifica sesión iniciada
     this.bs.logued().then((id)=>{
@@ -53,11 +54,25 @@ export class AdminComponent implements OnInit {
       this.datosusuario.Nombre=usr.payload.data().Nombre,
       this.datosusuario.Apellido=usr.payload.data().Apellido,
       this.datosusuario.Mail=usr.payload.data().Mail,
-      this.datosusuario.uid=usr.payload.data().uid      
+      this.datosusuario.uid=usr.payload.data().uid     
+      console.log(this.datosusuario); 
       editSubscribe.unsubscribe();
       
     })  
   }
+
+  //Función para actualizar los datos de usuario
+  updateUsuario(){
+    this.bs.updateUsuario(this.datosusuario).then(() => {
+      this.editUsuario=!this.editUsuario;
+      this.success=true;
+      setTimeout(function(){this.success=false},2000);
+    }, (error) => {
+      this.error=true;
+      setTimeout(function(){this.error=false},2000);
+    });;
+  }
+
 
   //Función de inicio de sesión
   login() {

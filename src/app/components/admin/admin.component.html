@@ -26,13 +26,22 @@
 
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-            <h1 class="display-4">Hola {{datosusuario.Nombre}}</h1>
-            <p class="lead">Bienvenido al centro de control de tu Portero Inteligente.</p>
+            <h1 class="display-4">Hola {{datosusuario.Nombre}} {{datosusuario.Apellido}}</h1>
+            <p class="lead">Bienvenido al centro de control de tu Portero Inteligente. {{datosusuario.uid}}</p>
         </div>
     </div>
-    <div>
-        {{ (item | async)?.name }}
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 </div>
 
@@ -91,18 +100,72 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Configuración de Usuario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <form #userdata="ngForm">
+
+                    <div class="form-group">
+
+
+                        <input class="form-control" type="text" placeholder="Nombre de Usuario" name="nombre" minlength=3 [(ngModel)]="datosusuario.Nombre" required #nombre="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                        <div class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.required}" *ngIf="nombre.errors?.required">
+                            Este campo es requerido.
+                        </div>
+                        <div *ngIf="nombre.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': nombre.errors?.minlength}">
+                            Mínimo {{nombre.errors.minlength.requiredLength}} caracteres.
+                        </div>
+
+
+                    </div>
+
+                    <div class="form-group">
+
+
+                        <input class="form-control" type="text" placeholder="Apellido" name="apellido" minlength=3 [(ngModel)]="datosusuario.Apellido" required #apellido="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                        <div class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.required}" *ngIf="apellido.errors?.required">
+                            Este campo es requerido.
+                        </div>
+                        <div *ngIf="apellido.errors?.minlength" class="invalid-feedback" [ngStyle]="{'display:inline': apellido.errors?.minlength}">
+                            Mínimo {{apellido.errors.minlength.requiredLength}} caracteres.
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <input class="form-control" type="email" placeholder="Contraseña" name="mail" minlength=3 [(ngModel)]="datosusuario.Mail" required #password="ngModel" [disabled]="!editUsuario" [ngClass]="{'is-invalid': nombre.errors?.required || nombre.errors?.minlength}">
+
+                    </div>
+                    <div class="form-group" *ngIf="!editUsuario">
+                        <button type="" class="btn btn-info btn-lg btn-block" (click)="editUsuario=!editUsuario"><i class="fas fa-user-edit "></i> Editar</button>
+                    </div>
+                    <div class="form-row" *ngIf="editUsuario">
+                        <div class="col">
+                            <button type="" [disabled]="!userdata.valid" class=" btn btn-info btn-lg btn-block " (click)="updateUsuario(datosusuario.uid) "><i class="fas fa-save "></i> Guardar</button>
+                        </div>
+                        <div class="col ">
+                            <button type=" " class="btn btn-danger btn-lg btn-block " (click)="editUsuario=!editUsuario "><i class="fas fa-times "></i> Cancelar</button>
+                        </div>
+
+
+                    </div>
+                    <div *ngIf="error " class="alert alert-danger " role="alert ">
+                        Hubo un problema, inténtelo nuevamente
+                    </div>
+                    <div *ngIf="success " class="alert alert-success " role="alert ">
+                        Datos actualizados correctamente
+                    </div>
+                </form>
+
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+
         </div>
     </div>
 </div>
