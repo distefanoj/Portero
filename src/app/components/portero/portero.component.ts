@@ -2,7 +2,13 @@ import { Component, OnInit, OnDestroy, AfterViewChecked, ElementRef, ViewChild, 
 import { SpeechRecognitionService } from "../../services/speech-recognition.service";
 import { SpeechsynthesizerService } from "../../services/speechsynthesizer.service";
 import { DialogflowService } from "../../services/dialog-flow.service";
+import { BackendService } from '../../services/backend.service';
 import { Message } from "../../interfaces/message";
+import { Conversacion } from "../../interfaces/conversacion";
+import { createReadStream } from 'fs';
+import { Timestamp } from 'rxjs/internal/operators/timestamp';
+import { callNgModuleLifecycle } from '@angular/core/src/view/ng_module';
+
 
 
 @Component({
@@ -17,22 +23,33 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
   conteo: number;
   speechHistory: Message[];
   mensaje:Message;
+  Conversacion:Conversacion;
+  idConversacion:string;
+  Conversaciones:Conversacion[];
 
+  
 
   constructor(private speechRecognitionService: SpeechRecognitionService,
               private SpeechsynthesizerService: SpeechsynthesizerService,
-              private DialogflowService: DialogflowService) {
+              private DialogflowService: DialogflowService, private bs: BackendService) {
+
       this.showSearchButton = true;
-      
       this.speechData = "";
       this.speechHistory=[];
       this.conteo=0;
-
+      this.mensaje={
+        content:"sarasa",
+        timestamp: new Date((new Date()).getTime() + 24*60*60*1000),
+        avatar: "jpg",
+        user: "bot"
+    }
+    this.Conversacion={uid:'',timestamp:new Date(), notificar:false};
   }
 
 
   ngOnInit() {
-      console.log("Iniciando Servicios")
+  
+ 
   }
 
   ngOnDestroy() {
@@ -41,6 +58,7 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   speechRecogn(): void {
     
+      
    
       //Primera respuesta al apretar el pulsador
       this.DialogflowService.getResponse("Hola").subscribe(res=>{
@@ -51,6 +69,7 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
       //Se inicia secuencia de escuchar - responder
       this.speechRecognitionService.record()
           .subscribe(
+
           //Escuchar
           (value) => {
             
@@ -61,7 +80,14 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
                     this.speechData = value;    
               }else{
                 this.speechData=""; 
-                this.mensaje=new Message(value, './assets/images/user.png', new Date(), 'user');
+                this.mensaje={
+                    content:value,
+                    avatar: './assets/images/user.png',
+                    timestamp: new Date(),
+                    user: 'user',
+                    uid:this.idConversacion;
+                };
+               
                 this.speechHistory.push(this.mensaje);
                 this.scrollToBottom()
                 this.DialogflowService.getResponse(value).subscribe(res=>{
@@ -69,13 +95,22 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
                     if (res.result.metadata.endConversation) {
                         this.SpeechsynthesizerService.speak(res.result.fulfillment.speech);
                         //console.log("Fin de Conversación: "+res.result.fulfillment.speech);
-                        this.mensaje=new Message(res.result.fulfillment.speech, './assets/images/bot.png', new Date(), 'bot');
+                        this.mensaje={
+                            content:res.result.fulfillment.speech,
+                            avatar: './assets/images/bot.png',
+                            timestamp: new Date(),
+                            user: 'bot',
+                            uid:this.idConversacion
+                        };
+                       
+                        
                         this.speechHistory.push(this.mensaje);
                         this.scrollToBottom()
                         this.end();
+                        
                     }else{
                         this.SpeechsynthesizerService.speak(res.result.fulfillment.speech);
-                        this.mensaje=new Message(res.result.fulfillment.speech, './assets/images/bot.png', new Date(), 'bot');
+                        this.mensaje=new Message(res.result.fulfillment.speech, './assets/images/bot.png', new Date(), 'bot', this.idConversacion);
                         this.speechHistory.push(this.mensaje);
                         this.scrollToBottom()
                         //console.log(res.result.fulfillment.speech);
@@ -114,7 +149,7 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
   comenzar(){
       this.speechRecogn();
       this.showSearchButton = false;
-     
+      this.crearConversacion();
   }
 
 
@@ -122,7 +157,19 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
       console.log("end");
     this.speechRecognitionService.DestroySpeechObject(); 
     this.showSearchButton = true;
-    
+    for (let i = 0; i < this.speechHistory.length; i++) { 
+        console.log(this.speechHistory[i]);
+        this.mensaje={
+            content:this.speechHistory[i].content,
+            avatar:this.speechHistory[i].avatar,
+            timestamp: this.speechHistory[i].timestamp,
+            user: this.speechHistory[i].user,
+            uid:this.idConversacion
+        };
+        this.bs.createMensaje(this.mensaje);
+        
+        }; 
+    this.speechHistory=[];
   }
 
 
@@ -136,5 +183,36 @@ scrollToBottom(): void {
     } catch(err) { console.log(err);}                 
 }
  
+
+
+imprimir(){
+    console.log(this.Conversacion);
+    }
+
+crearConversacion(){
+
+    this.Conversacion={
+    timestamp:new Date(),
+    uid:"",
+    notificar:false
+    }
+
+    this.bs.createConversacion(this.Conversacion).then(data=>{
+        this.Conversacion={
+            uid: data.id.toString(),
+            timestamp:new Date(),
+            notificar:false
+        }
+        this.idConversacion=data.id.toString()
+        this.bs.updateConversacion(this.Conversacion).then(
+         
+        );
+
+    });
+    
+   
+}
+
+
 
 }

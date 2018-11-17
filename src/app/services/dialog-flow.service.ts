@@ -23,7 +23,7 @@ export class DialogflowService {
     }
     return this.http
       .post(`${this.baseURL}`, data, {headers: this.getHeaders()}).pipe(map(res => {
-        console.log(data);
+        //console.log(data);
         //console.log(res.json());
         return res.json()
       }))

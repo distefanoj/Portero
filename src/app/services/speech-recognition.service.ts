@@ -62,6 +62,7 @@ export class SpeechRecognitionService {
             };
 
             this.speechRecognition.onerror = error => {
+                console.log("error");
                 observer.error(error);
                 this.zone.run(() => {
                     observer.error(error);

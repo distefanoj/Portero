@@ -126,15 +126,65 @@ public deleteHabitantes(documentId: string) {
 //-------------------------------------------------------------------------------------------
 
 
-l
 
 
 
-//----------------------------------- Funciones de Registro----------------------------------
 
+//----------------------------------- Funciones de Registro de mensajes----------------------
 
+//Obtiene lista de mensajes de una conversación
+public getMensaje() {
+  return this.afs.collection('mensaje').snapshotChanges();
+}
+
+//Crea un nuevo mensaje
+public createMensaje(data: any) {
+  return this.afs.collection('mensaje').add(data);
+}
+
+//Borra un mensaje
+public deleteMensaje(documentId: string) {
+  return this.afs.collection('mensaje').doc(documentId).delete();
+}
 
 //-------------------------------------------------------------------------------------------
+
+
+
+//------------------- Funciones de Registro de conversaciones -------------------------------
+
+//Obtiene lista de mensajes de una conversación
+public getConversacion() {
+  return this.afs.collection('conversaciones').snapshotChanges();
+}
+
+//Crea una nueva conversacion
+public createConversacion(data: any) {
+  return this.afs.collection('conversaciones').add(data);
+}
+
+//Actualiza una conversacion
+public updateConversacion(data: any) {
+  return this.afs.collection('conversaciones').doc(data.uid).set(data);
+}
+
+//Borra un mensaje
+public deleteConversacion(documentId: string) {
+  return this.afs.collection('conversaciones').doc(documentId).delete();
+}
+
+//-------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
