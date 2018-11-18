@@ -14,20 +14,13 @@
                         </button>
                         
                         <div class="dropdown-menu">
-                                <a class="dropdown-item logout" style="cursor: pointer;" (click)="pagina='2'"> <i class="fas fa-sign-out-alt "></i>
-                                    Conversaciones</a>
-                          <a class="dropdown-item" ><i class="fas fa-cogs "></i>
-                                Configuración</a>
-                          
+                            <a class="dropdown-item" style="cursor: pointer;" (click)="pagina='2'"> <i class="fas fa-comments "></i> Conversaciones</a>
+                        <div class="dropdown-divider"></div>         
+                            <a class="dropdown-item" ><i class="fas fa-cogs "></i> Configuración</a>
+                                <a class="dropdown-item" data-toggle="modal" data-target=".Perfil" style="cursor: pointer;"><i class="fas fa-user-cog"></i> Mi Perfil</a>
+                                <a class="dropdown-item" (click)="pagina='1'" style="cursor: pointer;"><i class="fas fa-users"></i> Habitantes</a>
                           <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" data-toggle="modal" data-target=".Perfil" style="cursor: pointer;"><i class="fas fa-user-cog"></i> Mi Perfil</a>
-                            <a class="dropdown-item" (click)="pagina='1'" style="cursor: pointer;"><i class="fas fa-users"></i> Habitantes</a>
-
-
-
-                          <div class="dropdown-divider"></div>
-                          <a class="dropdown-item logout" style="cursor: pointer;" (click)="logout()"> <i class="fas fa-sign-out-alt "></i>
-                           Cerrar Sesión</a>
+                            <a class="dropdown-item logout" style="cursor: pointer;" (click)="logout()"> <i class="fas fa-sign-out-alt "></i> Cerrar Sesión</a>
                         </div>
                     </div>
             </span>
@@ -119,10 +112,10 @@
                         <tbody>
                             <tr *ngFor="let conversacion of conversaciones ">
                                 <th scope="row ">{{conversacion.data.timestamp.toDate() | date:'short'}} </th>
-                                <td style="text-align: center" *ngIf="conversacion.data.notificar"><i style="color:green" class="fas fa-check-circle"></i></td>
-                                <td style="text-align: center" *ngIf="!conversacion.data.notificar"><i style="color:red" class="fas fa-times-circle"></i></td>
-                                <td style="text-align: center"><button style="" class="btn btn-info " (click)="buscaMensajes(conversacion.data.uid)"><i class="fas fa-comments"></i></button></td>
-                                <td style="text-align: center"><button class="btn btn-danger " (click)="deleteConversacion(conversacion.uid)"><i class="fas fa-trash-alt"></i></button></td>
+                                <td style="text-align: center" *ngIf="conversacion.data.notificar"><i style="color:#28a745" class="fas fa-check-circle"></i></td>
+                                <td style="text-align: center" *ngIf="!conversacion.data.notificar"><i style="color:#dc3545" class="fas fa-times-circle"></i></td>
+                                <td style="text-align: center"><i style="cursor:pointer; color:#17a2b8" (click)="buscaMensajes(conversacion.data.uid)" class="fas fa-comments"></i></td>
+                                <td style="text-align: center"><i (click)="deleteConversacion(conversacion.uid)" style="cursor:pointer; color:#dc3545" class="fas fa-trash-alt"></i></td>
                             </tr>
                         </tbody>
                     </table>

@@ -234,11 +234,19 @@ export class AdminComponent implements OnInit {
           console.error(error);
         });
       }
-    
+    //-------------------------------------------------------------------------------------------
+
+
 
 
 
 //-------------------------------------------------------------------------------------------
+
+
+
+
+
+
 
   //Luego de la construcción del componente se realiza la carga de habitantes y conversaciones
   ngOnInit() {

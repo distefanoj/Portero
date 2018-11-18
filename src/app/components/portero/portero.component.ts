@@ -54,13 +54,11 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.speechRecognitionService.DestroySpeechObject();
   }
 
+  //Función principal de conversación
   speechRecogn(): void {
-    
-      
-   
       //Primera respuesta al apretar el pulsador
       this.DialogflowService.getResponse("Hola").subscribe(res=>{
-        //console.log(res.result.fulfillment.speech);
+        console.log(res.result.fulfillment.speech);
         this.SpeechsynthesizerService.speak(res.result.fulfillment.speech);
       });
 
@@ -71,12 +69,12 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
           //Escuchar
           (value) => {
             
-              
+              //Se interpretan palabras intermedias y se muestran por pantalla
               if (value.startsWith('intermedio: ')) {                               
                     value = value.substring(12);
                     this.speechData = ('Interpretando: '+ value);
                     this.speechData = value;    
-              }else{
+              }else{//Se registra el nuevo mensaje
                 this.speechData=""; 
                 this.mensaje={
                     content:value,
@@ -85,11 +83,11 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
                     user: 'user',
                     uid:this.idConversacion
                 };
-               
-                this.speechHistory.push(this.mensaje);
-                this.scrollToBottom()
+                
+                this.speechHistory.push(this.mensaje);//Se ingresa el mensaje en el arreglo de mensajes
+                this.scrollToBottom()//mueve el lector de histórico de mensajes
                 this.DialogflowService.getResponse(value).subscribe(res=>{
-                    //console.log(res.result);
+                    //Fin de conversacion
                     if (res.result.metadata.endConversation) {
                         this.SpeechsynthesizerService.speak(res.result.fulfillment.speech);
                         //console.log("Fin de Conversación: "+res.result.fulfillment.speech);
@@ -100,65 +98,55 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
                             user: 'bot',
                             uid:this.idConversacion
                         };
-                       
-                        
+                        //Detecta si la conversación derivó en una notificación
+                        if(res.result.fulfillment.source=='notificacion'){
+                            this.setNotificado();
+                        }
                         this.speechHistory.push(this.mensaje);
                         this.scrollToBottom()
                         this.end();
-                        
                     }else{
                         this.SpeechsynthesizerService.speak(res.result.fulfillment.speech);
                         this.mensaje=new Message(res.result.fulfillment.speech, './assets/images/bot.png', new Date(), 'bot', this.idConversacion);
                         this.speechHistory.push(this.mensaje);
-                        this.scrollToBottom()
-                        //console.log(res.result.fulfillment.speech);
+                        this.scrollToBottom();                    
                     }
-                    
-                    
                   });    
-                
-               
                };
         },
-          //error
-          (err) => {
-              console.log(err);
-              
-              if (err.error == "no-speech") {
-                  this.conteo=this.conteo+1;
-                  if (this.conteo<=2) {
+        (err) => {//Se detecta ausencia de conversación
+            console.log(err);
+            if (err.error == "no-speech") {
+                this.conteo=this.conteo+1;//Se repite el saludo dos veces antes de terminar la conversación
+                if (this.conteo<=2) {
                     console.log("--Reiniciando Servicio--");
                     this.speechRecogn();  
-                  }else{
+                }else{
                     this.end();
-                    }
                 }
+            }
           },
           //completion
           () => {
             this.end();
-                
-            
-              
-          });
-          
+           });
   }
 
+  //Da inicio a la conversaciòn
   comenzar(){
       this.speechRecogn();
       this.showSearchButton = false;
       this.crearConversacion();
   }
 
-
+  //Finaliza la conversaciòn
   end(){
-      console.log("end");
     this.speechRecognitionService.DestroySpeechObject(); 
     this.showSearchButton = true;
 
     //carga mensajes de la conversación en la base de datos
     for (let i = 0; i < this.speechHistory.length; i++) { 
-        
+        //Se itera el arreglo de mensajes y se los carga en la base de datos con el uid de la conversación
         this.mensaje={
             content:this.speechHistory[i].content,
             avatar:this.speechHistory[i].avatar,
@@ -167,12 +155,41 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
             uid:this.idConversacion
         };
         this.bs.createMensaje(this.mensaje);
-        
         }; 
     this.speechHistory=[];
   }
 
 
+//Función para la creación de conversaciones    
+crearConversacion(){
+    //Se inicializa la conversación
+    this.Conversacion={
+    timestamp:new Date(),
+    uid:"",
+    notificar:false
+    }
+    //Se guarda la conversación en la base de datos, luego se le asigna su uid
+    this.bs.createConversacion(this.Conversacion).then(data=>{
+        this.Conversacion={
+            uid: data.id.toString(),
+            timestamp:new Date(),
+            notificar:false
+        }
+        this.idConversacion=data.id.toString()
+        this.bs.updateConversacion(this.Conversacion).then(
+        );
+    });
+}
+
+//Se actualiza la conversación en caso de haber emitido notificación
+setNotificado(){
+    this.Conversacion.notificar=true;
+    this.bs.updateConversacion(this.Conversacion).then();
+}
+
+
+
+//Funciones varias
   ngAfterViewChecked() {        
     this.scrollToBottom();        
 } 
@@ -182,37 +199,9 @@ scrollToBottom(): void {
         this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     } catch(err) { console.log(err);}                 
 }
- 
-
 
 imprimir(){
     console.log(this.Conversacion);
     }
-
-crearConversacion(){
-
-    this.Conversacion={
-    timestamp:new Date(),
-    uid:"",
-    notificar:false
-    }
-
-    this.bs.createConversacion(this.Conversacion).then(data=>{
-        this.Conversacion={
-            uid: data.id.toString(),
-            timestamp:new Date(),
-            notificar:false
-        }
-        this.idConversacion=data.id.toString()
-        this.bs.updateConversacion(this.Conversacion).then(
-         
-        );
-
-    });
-    
-   
-}
-
-
 
 }
