@@ -7,6 +7,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 
+//Configuración de Locale
+import { LOCALE_ID } from '@angular/core';
+import localeEsAr from "@angular/common/locales/es-AR";
+import {registerLocaleData} from '@angular/common';
+registerLocaleData(localeEsAr);
+
 //Firebase
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -26,6 +32,7 @@ import { SpeechRecognitionService } from "./services/speech-recognition.service"
 import { SpeechsynthesizerService } from "./services/speechsynthesizer.service";
 import { DialogflowService } from "./services/dialog-flow.service";
 import { BackendService } from './services/backend.service';
+
 
 
 @NgModule({
@@ -53,7 +60,8 @@ import { BackendService } from './services/backend.service';
     BackendService,
     DialogflowService,
     SpeechRecognitionService,
-    SpeechsynthesizerService
+    SpeechsynthesizerService,
+    { provide: LOCALE_ID, useValue: 'es-AR' }
   ],
   bootstrap: [AppComponent]
 })

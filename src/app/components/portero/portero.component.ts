@@ -5,9 +5,6 @@ import { DialogflowService } from "../../services/dialog-flow.service";
 import { BackendService } from '../../services/backend.service';
 import { Message } from "../../interfaces/message";
 import { Conversacion } from "../../interfaces/conversacion";
-import { createReadStream } from 'fs';
-import { Timestamp } from 'rxjs/internal/operators/timestamp';
-import { callNgModuleLifecycle } from '@angular/core/src/view/ng_module';
 
 
 
@@ -41,7 +38,8 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
         content:"sarasa",
         timestamp: new Date((new Date()).getTime() + 24*60*60*1000),
         avatar: "jpg",
-        user: "bot"
+        user: "bot",
+        uid:this.idConversacion,
     }
     this.Conversacion={uid:'',timestamp:new Date(), notificar:false};
   }
@@ -85,7 +83,7 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
                     avatar: './assets/images/user.png',
                     timestamp: new Date(),
                     user: 'user',
-                    uid:this.idConversacion;
+                    uid:this.idConversacion
                 };
                
                 this.speechHistory.push(this.mensaje);
@@ -157,8 +155,10 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
       console.log("end");
     this.speechRecognitionService.DestroySpeechObject(); 
     this.showSearchButton = true;
+
+    //carga mensajes de la conversación en la base de datos
     for (let i = 0; i < this.speechHistory.length; i++) { 
-        console.log(this.speechHistory[i]);
+        
         this.mensaje={
             content:this.speechHistory[i].content,
             avatar:this.speechHistory[i].avatar,

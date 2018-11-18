@@ -3,7 +3,8 @@ import { BackendService } from '../../services/backend.service';
 import { Usuario } from "../../interfaces/usuario.interface";
 import { Habitantes } from '../../interfaces/habitantes';
 import { Habitante } from '../../interfaces/habitante';
-
+import { Message } from '../../interfaces/message';
+import { Historialconveraciones } from '../../interfaces/historialconveraciones';
 
 @Component({
   selector: 'app-admin',
@@ -35,7 +36,12 @@ export class AdminComponent implements OnInit {
   //Variable del tipo Habitante para actualizar Base
   habitante:Habitante={Nombre:"",Apellido:"",Mail:"", Presente:false, uid:""}
 
+  //Arreglo de conversaciones
+  conversaciones:Historialconveraciones[]
 
+  //Arreglo de Mensajes
+  mensajes:Message[]
+  
   //Formulario de Login
   formulario= {
     mail:"distefanoj138@gmail.com",
@@ -204,9 +210,37 @@ export class AdminComponent implements OnInit {
 
     //-------------------------------------------------------------------------------------------
 
+
+
+    //----------------------------Funciones de Conversaciones y Mensajes-------------------------
+ 
+      //Función para buscar mensajes de una conversacion
+      buscaMensajes(id){
+        
+        this.bs.getMensaje().subscribe((mensaje)=>{
+          this.mensajes=[]
+          mensaje.forEach((datosmensaje:any)=>{
+            if(datosmensaje.payload.doc.data().uid==id){
+              this.mensajes.push(datosmensaje.payload.doc.data())
+            }
+          })
+        })
+      }
+
+      //Función para borrar una conversación
+      deleteConversacion(uid){
+        this.bs.deleteConversacion(uid).then(() => {
+        }, (error) => {
+          console.error(error);
+        });
+      }
+    
+
+
+
 //-------------------------------------------------------------------------------------------
 
-  //Luego de la construcción del componente se realiza la carga de habitantes
+  //Luego de la construcción del componente se realiza la carga de habitantes y conversaciones
   ngOnInit() {
     
       this.bs.getHabitantes().subscribe((Habitantes) => {
@@ -219,5 +253,17 @@ export class AdminComponent implements OnInit {
       });
     });
  
+    this.bs.getConversacion().subscribe((Conversaciones) => {
+      this.conversaciones = [];
+      Conversaciones.forEach((datosconversacion: any) => {
+        this.conversaciones.push({
+          uid: datosconversacion.payload.doc.id,
+          data: datosconversacion.payload.doc.data()
+        });
+      });
+    });
+
+
+
 }
 }

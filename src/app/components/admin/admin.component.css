@@ -252,3 +252,66 @@ body {
 .switch+.switch {
     margin-left: 1rem;
 }
+
+.message {
+    font-size: 1em;
+    font-style: italic;
+    font-weight: 400;
+    width: 80%;
+}
+
+.timeform {
+    float: left;
+    width: 100%;
+}
+
+.timeform>i {
+    margin-left: 20px;
+}
+
+.timeform>.timestamp {
+    font-size: 0.6em;
+}
+
+.avatar {
+    width: 9%;
+    margin-right: 20px;
+    margin-left: 20px
+}
+
+.user {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: .75rem 1.25rem;
+    color: #ff8b00;
+    background-color: #f1f1f1;
+    margin-left: -9%;
+}
+
+.user>.message {
+    text-align: right
+}
+
+.user>.timeform {
+    text-align: right!important;
+    margin-right: 20%!important;
+}
+
+.bot {
+    position: relative;
+    display: flex;
+    flex-flow: row wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: .75rem 1.25rem;
+    background-color: #ababab54;
+    color: #247575;
+    margin-left: -9%;
+}
+
+.bot>.timeform {
+    margin-left: 15%!important;
+}

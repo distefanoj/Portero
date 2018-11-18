@@ -134,7 +134,7 @@ public deleteHabitantes(documentId: string) {
 
 //Obtiene lista de mensajes de una conversación
 public getMensaje() {
-  return this.afs.collection('mensaje').snapshotChanges();
+  return this.afs.collection('mensaje', ref => ref.orderBy('timestamp')).snapshotChanges();
 }
 
 //Crea un nuevo mensaje
@@ -155,7 +155,7 @@ public deleteMensaje(documentId: string) {
 
 //Obtiene lista de mensajes de una conversación
 public getConversacion() {
-  return this.afs.collection('conversaciones').snapshotChanges();
+  return this.afs.collection('conversaciones', ref=>ref.orderBy('timestamp','desc')).snapshotChanges();
 }
 
 //Crea una nueva conversacion
