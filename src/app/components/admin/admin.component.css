@@ -315,3 +315,152 @@ body {
 .bot>.timeform {
     margin-left: 15%!important;
 }
+
+.habitantes {
+    text-align: center;
+    background: #fff;
+    border-radius: 2px;
+    display: inline-block;
+    height: 12vw;
+    margin: 1rem;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.habitantes2 {
+    background: #17a2b8;
+    border-radius: 2px;
+    display: inline-block;
+    height: 12vw;
+    margin: 1rem;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.estado {
+    background: #ffffff;
+    border-radius: 2px;
+    display: inline-block;
+    height: 4vw;
+    left: 1vw;
+    margin: 1rem;
+    position: relative;
+    width: 100%;
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+}
+
+.habitantesContent1 {
+    position: absolute;
+    top: 30%;
+    left: 26%;
+}
+
+.habitantesContent2 {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    font-weight: 600;
+}
+
+.habitantesContent3 {
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    font-weight: 600;
+    color: white
+}
+
+
+/*-=-=-=-=-=-=-=-=-=-=-=- */
+
+
+/* Column Grids */
+
+
+/*-=-=-=-=-=-=-=-=-=-=-=- */
+
+.col_half {
+    width: 49%;
+}
+
+.col_third {
+    width: 30%;
+}
+
+.col_fourth {
+    width: 23.5%;
+}
+
+.col_fifth {
+    width: 18.4%;
+}
+
+.col_sixth {
+    width: 15%;
+}
+
+.col_three_fourth {
+    width: 74.5%;
+}
+
+.col_twothird {
+    width: 66%;
+}
+
+.col_half,
+.col_third,
+.col_twothird,
+.col_fourth,
+.col_three_fourth,
+.col_fifth {
+    position: relative;
+    display: inline;
+    display: inline-block;
+    float: left;
+    margin-right: 2%;
+    margin-bottom: 20px;
+}
+
+.end {
+    margin-right: 0 !important;
+}
+
+
+/* Column Grids End */
+
+.wrapper {
+    width: 980px;
+    margin: 30px auto;
+    position: relative;
+}
+
+.counter {
+    background-color: #ffffff;
+    padding: 20px 0;
+    border-radius: 5px;
+}
+
+.count-title {
+    font-size: 40px;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.count-text {
+    font-size: 13px;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.fa-2x {
+    margin: 0 auto;
+    float: none;
+    display: table;
+    color: #4ad1e5;
+}

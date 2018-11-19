@@ -6,10 +6,11 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
+import { LocationStrategy, HashLocationStrategy} from '@angular/common';
 
-//Gráfico
+//Gráficos
 import { ChartsModule } from 'ng2-charts';
-
+import { NgxGaugeModule } from 'ngx-gauge';
 
 //Configuración de Locale
 import { LOCALE_ID } from '@angular/core';
@@ -61,14 +62,16 @@ import { LineaComponent } from './adicionales/linea/linea.component';
     AngularFireModule.initializeApp(environment.firebase, 'PorteroInteligente'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    ChartsModule    
+    ChartsModule,
+    NgxGaugeModule 
   ],
   providers: [
     BackendService,
     DialogflowService,
     SpeechRecognitionService,
     SpeechsynthesizerService,
-    { provide: LOCALE_ID, useValue: 'es-AR' }
+    { provide: LOCALE_ID, useValue: 'es-AR' },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
 })

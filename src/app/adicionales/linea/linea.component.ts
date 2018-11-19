@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { BackendService } from "../../services/backend.service";
 import { Conversacion } from "../../interfaces/conversacion";
-import { runInThisContext } from 'vm';
+
 import { BaseChartDirective } from "ng2-charts/ng2-charts";
 
 @Component({

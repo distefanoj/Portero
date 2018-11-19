@@ -44,13 +44,19 @@ export class AdminComponent implements OnInit {
   
   //Formulario de Login
   formulario= {
-    mail:"distefanoj138@gmail.com",
-    password:"tomcat14"    
+    mail:"",
+    password:""    
   }
  
   //Estado
   estado:any={};
   estadoText:string;
+
+  //Variables de cantidad de habitantes para FrontEnd de incio
+  cantHab:number=0;
+  cantHabPresentes:number=0;
+  porHabPresentes:number;
+  mensajesEnviados:number;
 
   //Constructor
   constructor(public bs:BackendService) {
@@ -73,7 +79,9 @@ export class AdminComponent implements OnInit {
           this.estadoText="Sistema Inactivo";
         }
       })
-    })  
+    })
+
+
   }
 
 
@@ -263,8 +271,19 @@ export class AdminComponent implements OnInit {
 //-------------------------------------------------------------------------------------------
 
 
-
-
+//Función para contar la cantidad de usuarios presentes que hay
+cuentaPresentes(){
+  this.cantHabPresentes=0;
+  this.porHabPresentes=0;
+  this.habitantes.forEach(e=>{
+    if(e.data.Presente){
+      this.cantHabPresentes=this.cantHabPresentes+1
+    
+    }
+  this.porHabPresentes=100-((this.cantHabPresentes*100)/this.habitantes.length);
+   })
+  
+}
 
 
 
@@ -272,26 +291,35 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     
       this.bs.getHabitantes().subscribe((Habitantes) => {
+
       this.habitantes = [];
       Habitantes.forEach((datosHabitante: any) => {
         this.habitantes.push({
           uid: datosHabitante.payload.doc.id,
           data: datosHabitante.payload.doc.data()
+          });         
         });
+        this.cantHab=this.habitantes.length;
+        this.cuentaPresentes();
       });
-    });
  
     this.bs.getConversacion().subscribe((Conversaciones) => {
       this.conversaciones = [];
+      this.mensajesEnviados=0;
       Conversaciones.forEach((datosconversacion: any) => {
+        if(datosconversacion.payload.doc.data().notificar){
+          this.mensajesEnviados=this.mensajesEnviados+1;
+          console.log("mensajes enviados= " +this.mensajesEnviados);
+        }
         this.conversaciones.push({
           uid: datosconversacion.payload.doc.id,
           data: datosconversacion.payload.doc.data()
         });
       });
     });
-
-
+    
+    
+    
 
 }
 }
