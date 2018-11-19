@@ -158,6 +158,11 @@ public getConversacion() {
   return this.afs.collection('conversaciones', ref=>ref.orderBy('timestamp','desc')).snapshotChanges();
 }
 
+
+public getConversacionGrafico() {
+  return this.afs.collection('conversaciones', ref=>ref.orderBy('timestamp','asc')).snapshotChanges();
+}
+
 //Crea una nueva conversacion
 public createConversacion(data: any) {
   return this.afs.collection('conversaciones').add(data);

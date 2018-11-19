@@ -7,6 +7,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from "@angular/router";
 
+//Gráfico
+import { ChartsModule } from 'ng2-charts';
+
+
 //Configuración de Locale
 import { LOCALE_ID } from '@angular/core';
 import localeEsAr from "@angular/common/locales/es-AR";
@@ -32,6 +36,7 @@ import { SpeechRecognitionService } from "./services/speech-recognition.service"
 import { SpeechsynthesizerService } from "./services/speechsynthesizer.service";
 import { DialogflowService } from "./services/dialog-flow.service";
 import { BackendService } from './services/backend.service';
+import { LineaComponent } from './adicionales/linea/linea.component';
 
 
 
@@ -39,7 +44,8 @@ import { BackendService } from './services/backend.service';
   declarations: [
     AppComponent,
     AdminComponent,
-    PorteroComponent
+    PorteroComponent,
+    LineaComponent
     
   ],
   imports: [
@@ -54,7 +60,8 @@ import { BackendService } from './services/backend.service';
     AppBootstrapModule,
     AngularFireModule.initializeApp(environment.firebase, 'PorteroInteligente'),
     AngularFirestoreModule,
-    AngularFireAuthModule    
+    AngularFireAuthModule,
+    ChartsModule    
   ],
   providers: [
     BackendService,
