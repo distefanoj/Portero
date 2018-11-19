@@ -48,7 +48,9 @@ export class AdminComponent implements OnInit {
     password:"tomcat14"    
   }
  
-
+  //Estado
+  estado:any={};
+  estadoText:string;
 
   //Constructor
   constructor(public bs:BackendService) {
@@ -58,8 +60,20 @@ export class AdminComponent implements OnInit {
       this.userid=id; //Se registra id de usuario
       this.getUsuario(); //Se obtienen datos del usuario logueado
       
+    });
+    //Se verifica el estado del dispositivo
+    this.bs.getEstado().subscribe((estado:any)=>{
+      estado.forEach(e=>{
+        this.estado={
+          state:e.payload.doc.data().state
+        }
+        if(this.estado.state){
+          this.estadoText="Sistema Activo";
+        }else{
+          this.estadoText="Sistema Inactivo";
+        }
+      })
     })  
-  
   }
 
 
@@ -96,11 +110,17 @@ export class AdminComponent implements OnInit {
 
     //-------------------------------------------------------------------------------------------
 
+   //----------------------------------- Función para encendido y apagado------------------------   
 
+    enciendeApaga(){
+      
+      let aux={
+        state:!this.estado.state,
+      }
+      this.bs.updateEstado(aux).then();
+    }
 
-
-
-
+    //-------------------------------------------------------------------------------------------
 
     //----------------------------------- Funciones de Usuario------------------------------------
 

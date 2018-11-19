@@ -20,44 +20,26 @@ public chart: BaseChartDirective;
   public conteo:number[]=[];// Cantidad de conversaciones por fecha
 
 
-// lineChart
+// Variables del gráfico
 public lineChartData:Array<any> = [
     {
       data: [],
       label:"Conversaciones"
     }
 ];
-public lineChartLabels:Array<any> = this.dates;
-
+public lineChartLabels:Array<any> = [];
 public lineChartOptions:any = {
 responsive: true
 };
 public lineChartColors:Array<any> = [
 { // grey
-backgroundColor: 'rgba(148,159,177,0.2)',
-borderColor: 'rgba(148,159,177,1)',
-pointBackgroundColor: 'rgba(148,159,177,1)',
+backgroundColor: '#56bdcde0',
+borderColor: '#17a2b8',
+pointBackgroundColor: '#17a2b8',
 pointBorderColor: '#fff',
 pointHoverBackgroundColor: '#fff',
-pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-},
-{ // dark grey
-backgroundColor: 'rgba(77,83,96,0.2)',
-borderColor: 'rgba(77,83,96,1)',
-pointBackgroundColor: 'rgba(77,83,96,1)',
-pointBorderColor: '#fff',
-pointHoverBackgroundColor: '#fff',
-pointHoverBorderColor: 'rgba(77,83,96,1)'
-},
-{ // grey
-backgroundColor: 'rgba(148,159,177,0.2)',
-borderColor: 'rgba(148,159,177,1)',
-pointBackgroundColor: 'rgba(148,159,177,1)',
-pointBorderColor: '#fff',
-pointHoverBackgroundColor: '#fff',
-pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-}
-];
+pointHoverBorderColor: '#17a2b8'
+}];
 public lineChartLegend:boolean = true;
 public lineChartType:string = 'line';
 
@@ -65,8 +47,7 @@ public lineChartType:string = 'line';
 
 
 
-  constructor(public bs:BackendService, ){
-    
+  constructor(public bs:BackendService, ){    
     //Carga inicial de arreglo de fechas de mensajes
     bs.getConversacionGrafico().subscribe((conv)=>{
       let fechas:any[]=[];
@@ -77,84 +58,97 @@ public lineChartType:string = 'line';
         //console.log(fechas[i]);
       } 
       this.conversacion=fechas;
-      this.generaGrafico()
-      setTimeout(() => {
-        this.chart.getChartBuilder(this.chart.ctx);
-    }, 10);
+      this.generaGrafico("dia")
       
-      
-      })
+    })
   }
 
 
 
 
 
-
-generaGrafico(){
-
-this.conversacion.forEach(d => {
-
-  //Variables auxiliares para cálculo de fecha-----------------
-  let monthNames = [
-    "ENE", "FEB", "MAR",
-    "ABR", "MAY", "JUN", "JUL",
-    "AGO", "SEP", "OCT",
-    "NOV", "DEC"
-  ];
-  let day = d.getDate();
-  let monthIndex = d.getMonth();
-  let year = d.getFullYear();
-  let fechaaux =day + ' ' + monthNames[monthIndex] + ' ' + year;
-  //------------------------------------------------------------
-
-
-
-
-  //Se verifica si la fecha ya fue incluida en el arreglo de fechas
-  if(this.dates.includes(fechaaux)){
-    let aux=this.dates.indexOf(fechaaux);
-    
-    this.lineChartData[0].data[aux]=this.lineChartData[0].data[aux]+1
-  }else{//Caso contrario se incluye
-    this.dates.push(fechaaux);
-    let aux=this.dates.indexOf(fechaaux);
-    this.lineChartData[0].data[aux]=1;
-  }
-
-
-});
-
-console.log("Fechas " + this.dates);
-console.log("Conteo " + this.conteo);
-console.log(this.lineChartLabels);
-console.log(this.lineChartData);
-
-
-
-
-}  
-
-  
- 
-  public randomize():void {
-    let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-    for (let i = 0; i < this.lineChartData.length; i++) {
-      _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-      for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-        _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-      }
+//Función para generar gráfico por tipo
+generaGrafico(tipo){
+  //Se blanquean las variables
+  this.lineChartData = [
+    {
+      data: [],
+      label:"Conversaciones"
     }
-    this.lineChartData = _lineChartData;
+  ];
+  this.lineChartLabels=[];
+  //Se calculan los arreglos en función del tipo de gráfico deseado
+  if(tipo=="dia"){
+    this.conversacion.forEach(d => {
+      //Variables auxiliares para cálculo de fecha-----------------
+      let monthNames = [
+        "ENE", "FEB", "MAR",
+        "ABR", "MAY", "JUN", "JUL",
+        "AGO", "SEP", "OCT",
+        "NOV", "DEC"
+      ];
+      let day = d.getDate();
+      let monthIndex = d.getMonth();
+      let year = d.getFullYear();
+      let fechaaux =day + ' ' + monthNames[monthIndex] + ' ' + year;
+      //------------------------------------------------------------
+      //Se verifica si la fecha ya fue incluida en el arreglo de fechas
+      if(this.lineChartLabels.includes(fechaaux)){
+        let aux=this.lineChartLabels.indexOf(fechaaux);
+        this.lineChartData[0].data[aux]=this.lineChartData[0].data[aux]+1
+      }else{//Caso contrario se incluye
+        this.lineChartLabels.push(fechaaux);
+        let aux=this.lineChartLabels.indexOf(fechaaux);
+        this.lineChartData[0].data[aux]=1;
+      }
+    });    
   }
- 
-  // events
-  public chartClicked(e:any):void {
-    console.log(e);
+  if(tipo=="mes"){
+    this.conversacion.forEach(d => {
+      //Variables auxiliares para cálculo de fecha-----------------
+      let monthNames = [
+        "ENE", "FEB", "MAR",
+        "ABR", "MAY", "JUN", "JUL",
+        "AGO", "SEP", "OCT",
+        "NOV", "DEC"
+      ];
+      let monthIndex = d.getMonth();
+      let year = d.getFullYear();
+      let fechaaux =monthNames[monthIndex] + ' ' + year;
+      //------------------------------------------------------------
+      //Se verifica si la fecha ya fue incluida en el arreglo de fechas
+      if(this.lineChartLabels.includes(fechaaux)){
+        let aux=this.lineChartLabels.indexOf(fechaaux);
+        this.lineChartData[0].data[aux]=this.lineChartData[0].data[aux]+1
+      }else{//Caso contrario se incluye
+        this.lineChartLabels.push(fechaaux);
+        let aux=this.lineChartLabels.indexOf(fechaaux);
+        this.lineChartData[0].data[aux]=1;
+      }
+    });    
   }
- 
-  public chartHovered(e:any):void {
-    console.log(e);
+  if(tipo=="año"){
+    this.conversacion.forEach(d => {
+      //Variables auxiliares para cálculo de fecha-----------------
+      let year = d.getFullYear();
+      let fechaaux =year;
+      //------------------------------------------------------------
+      //Se verifica si la fecha ya fue incluida en el arreglo de fechas
+      if(this.lineChartLabels.includes(fechaaux)){
+        let aux=this.lineChartLabels.indexOf(fechaaux);
+        this.lineChartData[0].data[aux]=this.lineChartData[0].data[aux]+1
+      }else{//Caso contrario se incluye
+        this.lineChartLabels.push(fechaaux);
+        let aux=this.lineChartLabels.indexOf(fechaaux);
+        this.lineChartData[0].data[aux]=1;
+      }
+    });    
   }
+  //Se refresca el gráfico
+    setTimeout(() => {
+      this.chart.getChartBuilder(this.chart.ctx);
+      
+  }, 10);
+}  
 
 }

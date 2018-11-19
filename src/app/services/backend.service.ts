@@ -181,14 +181,20 @@ public deleteConversacion(documentId: string) {
 //-------------------------------------------------------------------------------------------
 
 
+//------------------- Funciones de Prendido y Apagado-------- -------------------------------
+
+//Obtiene lista de mensajes de una conversación
+public getEstado() {
+  return this.afs.collection('estado').snapshotChanges();
+}
+
+//Actualiza una conversacion
+public updateEstado(data: any) {
+  return this.afs.collection('estado').doc('nWQ3ecRfccVeRe6FlQeV').set(data);
+}
 
 
-
-
-
-
-
-
+//-------------------------------------------------------------------------------------------
 
 
 

@@ -24,7 +24,10 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
   idConversacion:string;
   Conversaciones:Conversacion[];
 
+  //Estado
+  estado:any={};
   
+
 
   constructor(private speechRecognitionService: SpeechRecognitionService,
               private SpeechsynthesizerService: SpeechsynthesizerService,
@@ -42,6 +45,15 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
         uid:this.idConversacion,
     }
     this.Conversacion={uid:'',timestamp:new Date(), notificar:false};
+        //Se verifica el estado del dispositivo
+        this.bs.getEstado().subscribe((estado:any)=>{
+            estado.forEach(e=>{
+              this.estado={
+                state:e.payload.doc.data().state
+              }              
+            })
+        console.log(this.estado.state); 
+          })  
   }
 
 
@@ -132,11 +144,15 @@ export class PorteroComponent implements OnInit, OnDestroy, AfterViewChecked {
            });
   }
 
-  //Da inicio a la conversaciòn
+  //Da inicio a la conversación
   comenzar(){
+      if(this.estado.state){
       this.speechRecogn();
       this.showSearchButton = false;
       this.crearConversacion();
+    }else{
+        console.log("Sistema Inactivo");
+    }
   }
 
   //Finaliza la conversaciòn
